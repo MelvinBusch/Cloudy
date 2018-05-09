@@ -1,3 +1,4 @@
+const five = require("johnny-five");
 let board = new five.Board();
 
 board.on("ready", function() {
@@ -7,9 +8,7 @@ board.on("ready", function() {
   });
 
   button.on("press", function() {
-    console.log("Hallo Flo!");
-
-    document.getElementById("test").innerText = "Button pressed!";
+    console.log("Hallo Welt!");
   });
 
   console.log("Board is ready!");

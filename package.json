@@ -1,7 +1,7 @@
 {
   "name": "arduinotest",
   "version": "1.0.0",
-  "description": "Test Apllication for Arduino",
+  "description": "Poetry Clouds - Project for User Experience Design",
   "main": "server.js",
   "dependencies": {
     "express": "^4.16.3",
