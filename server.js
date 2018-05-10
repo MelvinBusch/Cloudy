@@ -1,11 +1,17 @@
-// General Server Setup
+// Setup
 let express = require("express");
 let app = express();
 let server = app.listen(process.env.PORT || 3000, listen);
 
+let five = require("johnny-five");
+let board = new five.Board();
+
+let host;
+let port;
+
 function listen() {
-  let host = server.address().address;
-  let port = server.address().port;
+  host = server.address().address;
+  port = server.address().port;
   console.log('Sever startet at: http://' + host + ':' + port);
 }
 
@@ -14,11 +20,24 @@ app.use(express.static('public'));
 // Socket Connection
 let io = require("socket.io")(server);
 
-// Handling new Connections
-io.sockets.on("connection", function(socket) {
-  console.log("New Client Connection: " + socket.id);
+board.on("ready", function() {
+  console.log("Board is ready...");
 
-  socket.on("disconnect", function() {
-    console.log("Client: " + socket.id + " disconnected");
+  let button = new five.Button(2, {
+    "holdtime": 50
+  });
+
+  io.sockets.on("connection", function(socket) {
+
+    console.log("New Connection: " + socket.id);
+
+    button.on("press", function() {
+      socket.emit("pressed");
+    });
+
+    // Handling disconnect
+    socket.on("disconnect", function() {
+      console.log("Client: " + socket.id + " disconnected");
+    });
   });
 });
