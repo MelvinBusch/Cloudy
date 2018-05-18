@@ -31,8 +31,7 @@ board.on("ready", function() {
 
     console.log("New Connection: " + socket.id);
 
-    button.on("press", function(_event) {
-      console.log(_event);
+    button.on("press", function() {
       socket.emit("pressed");
     });
 

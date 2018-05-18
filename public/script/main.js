@@ -1,19 +1,20 @@
+// socket.io
 const SOCKET = io.connect("http://localhost:3000");
 let button;
-let canvas;
 
+// Rotationserkennung
 let rotated = [];
 let rps;
 
-let cloud1;
-let cloud2;
+// Canvas
+let canvas;
+let frameCount = 0;
+let html;
 let canvasWidth;
 let canvasHeight;
-let frameCount = 0;
 let ctx;
 let clouds = [];
-
-let html;
+let raindrop;
 
 window.addEventListener("load", init);
 
@@ -22,9 +23,6 @@ function init() {
   html = document.documentElement;
 
   button = document.getElementById("rotate");
-
-  cloud1 = document.getElementById("cloud-1");
-  cloud2 = document.getElementById("cloud-2");
 
   SOCKET.on("pressed", function() {
     rotated.push("");
@@ -37,6 +35,10 @@ function init() {
 }
 
 function setup() {
+  // Image Data
+  let cloud1 = document.getElementById("cloud-1");
+  let cloud2 = document.getElementById("cloud-2");
+
   // Set canvas width and height
   canvasWidth = html.clientWidth;
   canvasHeight = html.clientHeight;
@@ -47,12 +49,14 @@ function setup() {
   ctx = canvas.getContext("2d");
 
   // create Clouds
-  for (let i = 0; i < 20; i++) {
+  for (let i = 0; i < 50; i++) {
     let x = Math.floor(Math.random() * (canvasWidth * .6 + canvasWidth * .2));
     let y = Math.floor(Math.random() * (canvasHeight * .6 + canvasHeight * .2));
 
     clouds[i] = new Cloud(x, y, Math.random() < .5 ? cloud1 : cloud2);
   }
+
+  raindrop = new Raindrop(500, 500);
 
   window.requestAnimationFrame(draw);
 }
@@ -75,34 +79,11 @@ function draw() {
     clouds[i].shake();
     clouds[i].show();
   }
-
   ctx.restore();
+  raindrop.show();
+
+  ctx.ellipse(this.x, this.y, 50, 50, 45 * Math.PI / 180, 0, 2 * Math.PI);
 
   frameCount++;
   window.requestAnimationFrame(draw);
-}
-
-class Cloud {
-  constructor(_xPos, _yPos, _image) {
-    this.x = _xPos;
-    this.y = _yPos;
-    this.xAcc;
-    this.yAcc;
-    this.image = _image;
-    this.imageScale = Math.random() * .3 + .2;
-    this.noise = new PerlinNoise(1, .005);
-    this.frameCountOffset = Math.random() * 100;
-  }
-
-  shake() {
-    this.xAcc = this.noise.noise(frameCount);
-    this.yAcc = this.noise.noise(frameCount + this.frameCountOffset);
-  }
-
-  show() {
-    let height = cloud2.width * this.imageScale;
-    let width = cloud2.height * this.imageScale;
-    ctx.globalAlpha = .6;
-    ctx.drawImage(this.image, this.x + this.xAcc, this.y + this.yAcc, height, width);
-  }
 }
