@@ -8,7 +8,7 @@ class Cloud {
     this.image = _image;
     this.imageScale = Math.random() * .3 + .2;
     this.noise = new PerlinNoise(1.5, .005);
-    this.frameCountOffset = Math.random() * 100;
+    this.frameCountOffset = Math.floor(Math.random() * 20);
   }
 
   rain() {

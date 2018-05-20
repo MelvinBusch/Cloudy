@@ -15,6 +15,8 @@ let canvasHeight;
 let ctx;
 let clouds = [];
 let raindrop;
+let cloud1;
+let cloud2;
 
 window.addEventListener("load", init);
 
@@ -36,8 +38,8 @@ function init() {
 
 function setup() {
   // Image Data
-  let cloud1 = document.getElementById("cloud-1");
-  let cloud2 = document.getElementById("cloud-2");
+  cloud1 = document.getElementById("cloud-1");
+  cloud2 = document.getElementById("cloud-2");
 
   // Set canvas width and height
   canvasWidth = html.clientWidth;
@@ -49,7 +51,7 @@ function setup() {
   ctx = canvas.getContext("2d");
 
   // create Clouds
-  for (let i = 0; i < 50; i++) {
+  for (let i = 0; i < 60; i++) {
     let x = Math.floor(Math.random() * (canvasWidth * .6 + canvasWidth * .2));
     let y = Math.floor(Math.random() * (canvasHeight * .6 + canvasHeight * .2));
 
