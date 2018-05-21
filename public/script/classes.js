@@ -1,18 +1,22 @@
 // Wolke
 class Cloud {
   constructor(_xPos, _yPos, _image) {
+    // Cloud
     this.x = _xPos;
     this.y = _yPos;
-    this.xAcc;
-    this.yAcc;
     this.image = _image;
     this.imageScale = Math.random() * .3 + .2;
+    this.imageWidth = this.image.width * this.imageScale;
+    this.imageHeight = this.image.height * this.imageScale;
+
+    // Animation
+    this.xAcc;
+    this.yAcc;
     this.noise = new PerlinNoise(1.5, .005);
-    this.frameCountOffset = Math.floor(Math.random() * 20);
-  }
+    this.frameCountOffset = Math.floor(Math.random() * 128);
 
-  rain() {
-
+    // Rain
+    this.raindrops = [];
   }
 
   shake() {
@@ -21,35 +25,45 @@ class Cloud {
   }
 
   show() {
-    let height = cloud2.width * this.imageScale;
-    let width = cloud2.height * this.imageScale;
     ctx.globalAlpha = .6;
-    ctx.drawImage(this.image, this.x + this.xAcc, this.y + this.yAcc, height, width);
+    ctx.drawImage(this.image, this.x + this.xAcc, this.y + this.yAcc, this.imageWidth, this.imageHeight);
+
+    // Raindrops
+    this.raindrops.forEach((raindrop) => {
+      raindrop.show();
+      raindrop.falldown();
+    });
+  }
+
+  callRain(_drops) {
+    for (let i = 0; i < _drops; i++) {
+      let drop = new Raindrop(this.x + this.imageWidth / 2, this.y + this.imageHeight);
+      this.raindrops[i] = drop;
+    }
+    console.log(this.raindrops);
   }
 }
 
 // Regentropfen
 class Raindrop {
   constructor(_x, _y) {
+    this.r = 4;
+    this.speed = Math.random() * 12 + 4;
     this.x = _x;
     this.y = _y;
-    this.z = Math.random();
-    this.dropcount = 60;
-    this.gravity = 1.98;
-    this.speed = 6;
+    this.currentY = this.y;
   }
 
-  updatePosition() {}
+  falldown() {
+    this.currentY += this.speed;
+  }
+
+  resetPosition() {}
 
   show() {
-    // ctx.fillStyle = "red";
-    ctx.ellipse(this.x, this.y, 50, 50, 45 * Math.PI / 180, 0, 2 * Math.PI);
+    ctx.beginPath();
+    ctx.ellipse(this.x, this.currentY, this.r, this.r, Math.PI / 180, 0, 2 * Math.PI);
+    ctx.fillStyle = "rgb(50, 207, 239)"; //"rgb(255,0,0)"; //
+    ctx.fill();
   }
 }
-
-/*
-
-Beschleunigung
-a = v/t
-
-*/

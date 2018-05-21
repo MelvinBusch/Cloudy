@@ -14,7 +14,7 @@ let canvasWidth;
 let canvasHeight;
 let ctx;
 let clouds = [];
-let raindrop;
+let raindrops = [];
 let cloud1;
 let cloud2;
 
@@ -51,14 +51,13 @@ function setup() {
   ctx = canvas.getContext("2d");
 
   // create Clouds
-  for (let i = 0; i < 60; i++) {
+  for (let i = 0; i < 30; i++) {
     let x = Math.floor(Math.random() * (canvasWidth * .6 + canvasWidth * .2));
     let y = Math.floor(Math.random() * (canvasHeight * .6 + canvasHeight * .2));
 
     clouds[i] = new Cloud(x, y, Math.random() < .5 ? cloud1 : cloud2);
+    clouds[i].callRain(10); // Übergabeparameter Anzahl Regentropfen
   }
-
-  raindrop = new Raindrop(500, 500);
 
   window.requestAnimationFrame(draw);
 }
@@ -74,18 +73,28 @@ function draw() {
   ctx.fillStyle = background;
   ctx.strokeStyle = "none";
   ctx.fillRect(0, 0, canvasWidth, canvasHeight);
-  ctx.save();
 
-  // Render Clouds to Screen
+  // Display Clouds
+  ctx.save();
   for (let i = 0; i < clouds.length; i++) {
     clouds[i].shake();
     clouds[i].show();
+
+    clouds[i].raindrops.forEach((raindrop) => {
+      if (raindrop.currentY > canvasHeight) {
+        raindrop.currentY = clouds[i].y + clouds[i].yAcc + clouds[i].imageHeight;
+        raindrop.x = randomInt(clouds[i].x + clouds[i].xAcc + 10, clouds[i].x + clouds[i].imageWidth + clouds[i].xAcc - 10);
+      }
+    });
   }
   ctx.restore();
-  raindrop.show();
 
-  ctx.ellipse(this.x, this.y, 50, 50, 45 * Math.PI / 180, 0, 2 * Math.PI);
+  // console.log();
 
   frameCount++;
   window.requestAnimationFrame(draw);
+}
+
+function randomInt(min, max) {
+  return Math.floor(Math.random() * (max - min + 1) + min);
 }
