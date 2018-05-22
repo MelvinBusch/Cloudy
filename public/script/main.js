@@ -1,22 +1,27 @@
-// socket.io
+// Socket Verbindung
 const SOCKET = io.connect("http://localhost:3000");
 let button;
 
 // Rotationserkennung
 let rotated = [];
-let rps;
+let rps = 0;
 
 // Canvas
 let canvas;
-let frameCount = 0;
 let html;
 let canvasWidth;
 let canvasHeight;
 let ctx;
+let frameCount = 0;
+
+// Clouds
 let clouds = [];
-let raindrops = [];
 let cloud1;
 let cloud2;
+
+// Raindrops
+let raindrops = [];
+let dropCount = 10;
 
 window.addEventListener("load", init);
 
@@ -29,8 +34,7 @@ function init() {
   SOCKET.on("pressed", function() {
     rotated.push("");
     setTimeout(() => rotated.splice(0, 1), 1000);
-    rps = rotated.length;
-    console.log("Das Rad dreht sich: " + rps + " mal pro Sekunde");
+    // console.log("Das Rad dreht sich: " + rps + " mal pro Sekunde");
   });
 
   setup();
@@ -51,12 +55,12 @@ function setup() {
   ctx = canvas.getContext("2d");
 
   // create Clouds
-  for (let i = 0; i < 30; i++) {
+  for (let i = 0; i < 50; i++) {
     let x = Math.floor(Math.random() * (canvasWidth * .6 + canvasWidth * .2));
     let y = Math.floor(Math.random() * (canvasHeight * .6 + canvasHeight * .2));
 
     clouds[i] = new Cloud(x, y, Math.random() < .5 ? cloud1 : cloud2);
-    clouds[i].callRain(10); // Übergabeparameter Anzahl Regentropfen
+    clouds[i].callRain(dropCount); // Übergabeparameter Anzahl Regentropfen
   }
 
   window.requestAnimationFrame(draw);
@@ -89,7 +93,11 @@ function draw() {
   }
   ctx.restore();
 
-  // console.log();
+  // Process Button Press
+  rps = rotated.length;
+  if (rps > 0) {
+    console.log(rps);
+  }
 
   frameCount++;
   window.requestAnimationFrame(draw);

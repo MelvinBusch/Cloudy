@@ -40,7 +40,6 @@ class Cloud {
       let drop = new Raindrop(this.x + this.imageWidth / 2, this.y + this.imageHeight);
       this.raindrops[i] = drop;
     }
-    console.log(this.raindrops);
   }
 }
 
@@ -48,7 +47,7 @@ class Cloud {
 class Raindrop {
   constructor(_x, _y) {
     this.r = 4;
-    this.speed = Math.random() * 12 + 4;
+    this.speed = Math.random() * 9.81 + 4;
     this.x = _x;
     this.y = _y;
     this.currentY = this.y;
@@ -58,11 +57,10 @@ class Raindrop {
     this.currentY += this.speed;
   }
 
-  resetPosition() {}
-
   show() {
     ctx.beginPath();
     ctx.ellipse(this.x, this.currentY, this.r, this.r, Math.PI / 180, 0, 2 * Math.PI);
+    ctx.globalAlpha = .3;
     ctx.fillStyle = "rgb(50, 207, 239)"; //"rgb(255,0,0)"; //
     ctx.fill();
   }
