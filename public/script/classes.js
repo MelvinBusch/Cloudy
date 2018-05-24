@@ -51,6 +51,7 @@ class Raindrop {
     this.x = _x;
     this.y = _y;
     this.currentY = this.y;
+    this.alpha = .8;
   }
 
   falldown() {
@@ -60,7 +61,7 @@ class Raindrop {
   show() {
     ctx.beginPath();
     ctx.ellipse(this.x, this.currentY, this.r, this.r, Math.PI / 180, 0, 2 * Math.PI);
-    ctx.globalAlpha = .3;
+    ctx.globalAlpha = this.alpha;
     ctx.fillStyle = "rgb(50, 207, 239)"; //"rgb(255,0,0)"; //
     ctx.fill();
   }

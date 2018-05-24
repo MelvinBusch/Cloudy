@@ -20,7 +20,6 @@ let cloud1;
 let cloud2;
 
 // Raindrops
-let raindrops = [];
 let dropCount = 10;
 
 window.addEventListener("load", init);
@@ -35,6 +34,14 @@ function init() {
     rotated.push("");
     setTimeout(() => rotated.splice(0, 1), 1000);
     // console.log("Das Rad dreht sich: " + rps + " mal pro Sekunde");
+  });
+
+  // Press Space Bar for testing purpose without Arduino
+  document.addEventListener("keypress", (_event) => {
+    if (_event.key == " ") {
+      rotated.push("");
+      setTimeout(() => rotated.splice(0, 1), 1000);
+    }
   });
 
   setup();
@@ -55,7 +62,7 @@ function setup() {
   ctx = canvas.getContext("2d");
 
   // create Clouds
-  for (let i = 0; i < 50; i++) {
+  for (let i = 0; i < 30; i++) {
     let x = Math.floor(Math.random() * (canvasWidth * .6 + canvasWidth * .2));
     let y = Math.floor(Math.random() * (canvasHeight * .6 + canvasHeight * .2));
 
@@ -96,13 +103,70 @@ function draw() {
   // Process Button Press
   rps = rotated.length;
   if (rps > 0) {
-    console.log(rps);
+    // console.log(rps);
   }
 
   frameCount++;
   window.requestAnimationFrame(draw);
 }
 
+let interaction = setInterval(() => {
+    // console.log(rps);
+
+    if (rps > 2) {
+
+      // Stop Rain
+      for (let i = 0; i < clouds.length; i++) {
+        let raindrops = clouds[i].raindrops;
+
+        for (let j = 0; j < raindrops.length; j++) {
+          if (raindrops[j].alpha != 0) {
+
+            // TODO: Regentropfen ausfaden statt verschwinden
+
+            raindrops[j].alpha = 0;
+            break;
+          }
+        }
+      }
+    } else {
+
+      // Start Rain again
+      for (let i = 0; i < clouds.length; i++) {
+        let raindrops = clouds[i].raindrops;
+
+        for (let j = 0; j < raindrops.length; j++) {
+          if (raindrops[j].alpha == 0) {
+
+            // TODO: Regentropfen einfaden statt aufploppen
+
+            raindrops[j].alpha = .8;
+            break;
+          }
+        }
+      }
+    }
+  },
+  1000);
+
+function randomArrayIndex(_array) {
+  return Math.floor(Math.random() * _array.length);
+}
+
 function randomInt(min, max) {
   return Math.floor(Math.random() * (max - min + 1) + min);
+}
+
+function fade(_start, _end) {
+  _end ? _end : 0;
+  let factor = .02;
+
+  if (_start > _end) {
+    let id = setInterval(() => {
+      _start -= factor;
+      if (_start) {
+
+      }
+    }, 20)
+  }
 }
