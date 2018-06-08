@@ -125,6 +125,8 @@ let interaction = setInterval(() => {
             // TODO: Regentropfen ausfaden statt verschwinden
 
             raindrops[j].alpha = 0;
+            //raindrops[j].fadeout();
+            //console.log(raindrops[j].alpha);
             break;
           }
         }

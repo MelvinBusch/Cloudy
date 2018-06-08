@@ -65,4 +65,15 @@ class Raindrop {
     ctx.fillStyle = "rgb(50, 207, 239)"; //"rgb(255,0,0)"; //
     ctx.fill();
   }
+
+  async fadeout() {
+    //for (let i = 0; i < 40; i++) {
+    this.alpha -= .1;
+    //await this.sleep(100);
+    //}
+  }
+
+  sleep(_ms) {
+    return new Promise(resolve => setTimeout(resolve, _ms));
+  }
 }
