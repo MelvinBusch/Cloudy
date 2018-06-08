@@ -1,8 +1,25 @@
+const SOCKET = io.connect("http://localhost:3000");
+
 let t = 0;
 let c1, c2;
 let clouds = [];
 let drops = [];
 let canvasBorder = 20;
+
+let rps = 0;
+let rotated = [];
+
+let pressed = false;
+
+// Socket Event
+SOCKET.on("rotating", () => {
+  rotated.push("");
+  setTimeout(() => rotated.splice(0, 1), 1000);
+
+  rps = rotated.length / 2;
+
+  console.log("Das Rad dreht sich: " + rps + " mal pro Sekunde");
+});
 
 function setup() {
   createCanvas(windowWidth, windowHeight);
@@ -12,7 +29,7 @@ function setup() {
   c2 = color(232, 194, 225);
 
   // Clouds
-  for (var i = 0; i < 20; i++) {
+  for (var i = 0; i < 10; i++) {
     clouds[i] = new Cloud(random(canvasBorder, width - canvasBorder), random(canvasBorder, height - canvasBorder));
   }
 
@@ -40,7 +57,6 @@ function backgroundGradient(x, y, w, h, c1, c2) {
     line(x, i, x + w, i);
   }
 }
-
 
 /*// Raindrops
 let drop = new Rain();
