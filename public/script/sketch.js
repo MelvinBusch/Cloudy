@@ -16,20 +16,28 @@ SOCKET.on("rotating", () => {
   rotated.push("");
   setTimeout(() => rotated.splice(0, 1), 1000);
 
-  rps = rotated.length / 2;
-
-  console.log("Das Rad dreht sich: " + rps + " mal pro Sekunde");
+  // console.log("Das Rad dreht sich: " + rps + " mal pro Sekunde");
 });
+
+function keyPressed() {
+  if (key === " ") {
+    rotated.push("");
+    setTimeout(() => rotated.splice(0, 1), 1000);
+
+    // console.log("Das Rad dreht sich: " + rps + " mal pro Sekunde");
+  }
+}
 
 function setup() {
   createCanvas(windowWidth, windowHeight);
+  angleMode(DEGREES);
 
   // Background
   c1 = color(173, 225, 248);
   c2 = color(232, 194, 225);
 
   // Clouds
-  for (var i = 0; i < 10; i++) {
+  for (var i = 0; i < 25; i++) {
     clouds[i] = new Cloud(random(canvasBorder, width - canvasBorder), random(canvasBorder, height - canvasBorder));
   }
 
@@ -43,6 +51,7 @@ function draw() {
     cloud.show();
   });
 
+  rps = rotated.length / 2;
 
   // Move ahead in time
   t += .01;
@@ -58,15 +67,6 @@ function backgroundGradient(x, y, w, h, c1, c2) {
   }
 }
 
-/*// Raindrops
-let drop = new Rain();
-drops.push(drop);
-
-for (let i = drops.length - 1; i >= 0; i--) {
-  drops[i].update();
-  drops[i].show();
-
-  if (drops[i].done()) {
-    drops.splice(i, 1);
-  }
-}*/
+function windowResized() {
+  resizeCanvas(windowWidth, windowHeight);
+}
