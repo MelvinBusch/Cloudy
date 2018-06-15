@@ -37,7 +37,7 @@ function setup() {
   c2 = color(232, 194, 225);
 
   // Clouds
-  for (var i = 0; i < 25; i++) {
+  for (var i = 0; i < 27; i++) { // 25
     clouds[i] = new Cloud(random(canvasBorder, width - canvasBorder), random(canvasBorder, height - canvasBorder));
   }
 

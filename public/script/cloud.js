@@ -3,7 +3,7 @@ class Cloud {
     this.pos = createVector(_x, _y);
 
     this.particles = [];
-    for (var i = 0; i < 60; i++) {
+    for (var i = 0; i < 60; i++) { // 60
       this.particles[i] = new CloudParticle(this.pos.x + random(-80, 80), this.pos.y + random(-50, 50));
     }
   }
@@ -22,29 +22,30 @@ class CloudParticle {
     this.pos = createVector(_x, _y);
     this.spawn = createVector(_x, _y);
     this.target = createVector(_x, _y);
-    this.randomArea = 300;
     this.origin = createVector(width / 2, height / 2);
 
-    this.randomTarget = p5.Vector.sub(this.spawn, this.origin).mult(8);
-    console.log(this.randomTarget);
+    this.randomTarget = this.calcTarget(); // (p5.Vector.sub(this.spawn, this.origin).mult().add(this.origin));
 
     this.vel = p5.Vector.random2D();
     this.acc = createVector();
 
     this.maxSpeed = .5; // .5
-    this.maxForce = .08; // .08
-
-    // this.maxSpeed = .5 / 10;
-    // this.maxForce = .08 / 10;
+    this.maxForce = 1; // .08
 
     this.r = floor(random(20, 60));
     this.alpha = floor(random(40, 80));
   }
 
+  calcTarget() {
+    let ot = p5.Vector.sub(this.spawn, this.origin);
+    let vectorDist = this.spawn.dist(this.origin);
+    let maxDist = sqrt(width * width + height * height);
+    let factor = map(vectorDist, 0, maxDist, 8, 3);
+    return ot.mult(factor).add(this.origin);
+  }
+
   behaviors() {
     let arrive = this.arrive(this.target);
-    let flee = this.seek(this.spawn);
-
     this.applyForce(arrive);
   }
 
@@ -65,7 +66,7 @@ class CloudParticle {
   show() {
     fill(255, this.alpha);
     noStroke();
-    ellipse(this.pos.x, this.pos.y, this.r);
+    ellipse(this.pos.x, this.pos.y, this.r * 1.5);
   }
 
   applyForce(_force) {
@@ -75,46 +76,14 @@ class CloudParticle {
   arrive(_target) {
     let desired = p5.Vector.sub(_target, this.pos);
     let d = desired.mag();
-    let speed = 200;
+    let speed = 10;
 
-    if (d < this.randomArea) {
-      speed = map(d, 1, 200, 0, this.maxSpeed);
+    if (d < 200) {
+      speed = map(d, 0, 10, 0, this.maxspeed);
     }
     desired.setMag(speed);
     let steer = p5.Vector.sub(desired, this.vel);
     steer.limit(this.maxForce);
     return steer;
   }
-
-  seek(_target) {
-    let desired = p5.Vector.sub(_target, this.pos);
-    let d = desired.mag();
-    if (d < 200) {
-      desired.setMag(this.maxSpeed);
-      desired.mult(-1);
-      let steer = p5.Vector.sub(desired, this.vel);
-      steer.limit(this.maxForce);
-      return steer;
-    } else {
-      return createVector(0, 0);
-    }
-  }
 }
-
-//this.randomTarget = createVector(floor(random(this.pos.x - this.randomArea, this.pos.x + this.randomArea)), floor(random(this.pos.y - this.randomArea, this.pos.y + this.randomArea)));
-/*if (this.spawn.x > width / 2) {
-  if (this.spawn.y > height / 2) {
-    this.randomTarget = createVector(random(width / 2, width + 200), random(height, height + 200));
-  } else {
-    this.randomTarget = createVector(random(width / 2, width + 200), random(0, -200));
-  }
-} else {
-  if (this.spawn.y > height / 2) {
-    this.randomTarget = createVector(random(0, -200), random(height, height + 200));
-  } else {
-    this.randomTarget = createVector(random(0, -200), random(0, -200));
-  }
-}*/
-// this.randomTarget = createVector();
-// this.randomTarget.x = this.spawn.x;
-// this.randomTarget = p5.Vector.add(this.origin, this.origin.sub(this.spawn));
