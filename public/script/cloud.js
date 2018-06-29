@@ -33,24 +33,8 @@ class CloudParticle {
     this.alpha = floor(random(40, 80));
     this.img = random() < .3 ? img[0] : img[1];
 
-    this.maxSpeed = 10; // .5
-    this.maxForce = 1; // .1
-  }
-
-  calcTarget() {
-    let ot = p5.Vector.sub(this.spawn, this.origin);
-    let vectorDist = this.spawn.dist(this.origin);
-    let maxDist = sqrt(width * width + height * height);
-    let factor = map(vectorDist, 0, maxDist, 8, 3);
-    return ot.mult(factor).add(this.origin);
-  }
-
-  behaviors() {
-    let arrive = this.arrive(this.target);
-    let flee = this.flee(this.origin);
-
-    this.applyForce(arrive);
-    this.applyForce(flee);
+    this.maxSpeed = 3; // 10
+    this.maxForce = .05; // 1
   }
 
   update() {
@@ -71,8 +55,33 @@ class CloudParticle {
     image(this.img, this.pos.x, this.pos.y);
   }
 
+  calcTarget() {
+    let ot = p5.Vector.sub(this.spawn, this.origin);
+    let vectorDist = this.spawn.dist(this.origin);
+    let maxDist = sqrt(width * width + height * height);
+    let factor = map(vectorDist, 0, maxDist, 8, 3);
+    return ot.mult(factor).add(this.origin);
+  }
+
+  behaviors() {
+    let arrive = this.arrive(this.target);
+    let flee = this.flee(this.origin);
+    let bounce = this.bounce();
+
+    // arrive.mult(1);
+    // flee.mult(5);
+
+    this.applyForce(arrive);
+    this.applyForce(flee);
+    //this.applyForce(bounce);
+  }
+
   applyForce(_force) {
     this.acc.add(_force);
+  }
+
+  bounce() {
+    return createVector(noise(frameCount), noise(frameCount + 500));
   }
 
   flee(_target) {
@@ -92,8 +101,8 @@ class CloudParticle {
     let desired = p5.Vector.sub(_target, this.pos);
     let d = desired.mag();
     let speed = this.maxSpeed;
-    if (d < 300) {
-      speed = map(d, 0, 300, 0, this.maxspeed);
+    if (d < 11) {
+      speed = map(d, 0, 11, 0, this.maxspeed);
     }
     desired.setMag(speed);
     let steer = p5.Vector.sub(desired, this.vel);

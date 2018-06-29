@@ -40,7 +40,7 @@ function setup() {
   c2 = color(232, 194, 225);
 
   // Clouds
-  for (let i = 0; i < 60; i++) { // 25
+  for (let i = 0; i < 60; i++) { // 60
     clouds[i] = new Cloud(random(canvasBorder, width - canvasBorder), random(canvasBorder, height - canvasBorder));
   }
 
