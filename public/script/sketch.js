@@ -40,7 +40,7 @@ function setup() {
   c2 = color(232, 194, 225);
 
   // Clouds
-  for (let i = 0; i < 60; i++) { // 60
+  for (let i = 0; i < 35; i++) { // 60
     clouds[i] = new Cloud(random(canvasBorder, width - canvasBorder), random(canvasBorder, height - canvasBorder));
   }
 
@@ -57,7 +57,7 @@ function draw() {
   rps = rotated.length / 2;
 
   // Move ahead in time
-  t += .01;
+  t += 1;
 }
 
 function backgroundGradient(x, y, w, h, c1, c2) {
