@@ -58,6 +58,7 @@ class CloudParticle {
   }
 
   show() {
+    // this.img.resize(120, 0);
     image(this.img, this.pos.x, this.pos.y);
     // strokeWeight(4);
     // stroke("#ff0000");
@@ -68,7 +69,7 @@ class CloudParticle {
     let ot = p5.Vector.sub(this.spawn, this.origin);
     let vectorDist = this.spawn.dist(this.origin);
     let maxDist = sqrt(width * width + height * height);
-    let factor = map(vectorDist, 0, maxDist, 8, 4); // 8,3
+    let factor = map(vectorDist, 0, maxDist, 10, 4); // 8,3
     return ot.mult(factor).add(this.origin);
   }
 

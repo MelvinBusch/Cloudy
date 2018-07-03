@@ -1,17 +1,18 @@
 class Rain {
-  constructor() {
-    this.pos = createVector(width / 2, 50);
+  constructor(_x, _y) {
+    this.pos = createVector(_x, _y);
     this.vel = createVector(random(-.5, .5), random(4, 8));
 
     this.r = 8;
     this.alpha = 255;
+    this.color = color(0, 0, 255);
   }
 
   update() {
     this.pos.x += this.vel.x;
     this.pos.y += this.vel.y;
 
-    this.alpha -= 3;
+    this.alpha -= 10;
   }
 
   show() {
