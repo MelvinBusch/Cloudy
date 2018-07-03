@@ -50,9 +50,6 @@ function setup() {
   for (let i = 0; i < 35; i++) { // 60
     clouds[i] = new Cloud(random(canvasBorder, width - canvasBorder), random(canvasBorder, height - canvasBorder));
   }
-
-
-
 }
 
 function draw() {
