@@ -8,8 +8,10 @@ Das User Interface ist mit Javascript und der, eigens für kreative Programmieru
 
 ## Starten der Anwendung
 Zuerst müssen die drei Anschlüsse am Windrad (rot, braun, orange) mit dem Arduino verbunden werden. Hierbei ist:
+
 * rot: Spannung (5V)
 * orange: Masse
 * braun: Signal - Analog Input (A0)
+
 Zum Starten der Anwendung ist eine Installation von NodeJS notwendig, sofern nicht vorhanden.
 Die Anwendung kann dann über den Shell-Command `$ node server.js` gestartet werden. Wenn keine Fehler aufgetreten sind, kann die Anwendung nun im Browser unter `http://localhost:3000/` aufgerufen werden
