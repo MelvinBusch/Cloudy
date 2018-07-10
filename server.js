@@ -1,13 +1,14 @@
 // Setup
-let express = require("express");
-let app = express();
-let server = app.listen(process.env.PORT || 3000, listen);
-
-let five = require("johnny-five");
-let board = new five.Board();
+const express = require("express");
+const app = express();
+const server = app.listen(process.env.PORT || 3000, listen);
 
 let host;
 let port;
+
+const five = require("johnny-five");
+const board = new five.Board();
+let sensor;
 
 function listen() {
   host = server.address().address;
@@ -20,23 +21,23 @@ app.use(express.static('public'));
 // Socket Connection
 let io = require("socket.io")(server);
 
-board.on("ready", function() {
+board.on("ready", () => {
   console.log("Board is ready...");
 
-  let button = new five.Button(2, {
-    "holdtime": 50
+  sensor = new five.Sensor({
+    pin: "A0",
+    threshold: 100
   });
 
-  io.sockets.on("connection", function(socket) {
+  io.sockets.on("connection", (socket) => {
 
-    console.log("New Connection: " + socket.id);
-
-    button.on("press", function() {
-      socket.emit("pressed");
+    // When rotating send event
+    sensor.on("change", () => {
+      socket.emit("rotating");
     });
 
     // Handling disconnect
-    socket.on("disconnect", function() {
+    socket.on("disconnect", () => {
       console.log("Client: " + socket.id + " disconnected");
     });
   });
