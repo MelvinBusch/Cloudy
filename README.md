@@ -1,5 +1,5 @@
-# UX-Design
-Eine Interaktive Installation für die Vorlesung UX Design
+# Cloudy
+Eine Interaktive Installation für die Veranstaltung UX-Design der Hochschule Furtwangen im 2. Semester.
 
 ## Technischer Ablauf
 An der Rückseite des Windrades befinden sich kleine unterschiedlich gepolte Magnete, welche bei der Rotation des Windrades am Wirkungsbereich eines Hall-Sensors streifen. Angeregt durch die unterschiedlich gepolten Magnetfelder, gibt der Hall Sensor ein digitales Signal aus. Am Ende des Signalweges befindet sich ein Arduino-Mikrocontroller. Im Mikrocontroller wird das Signal des Hall Sensors mit dem "Firmata" Protokoll codiert und an den angeschlossenen Computer gesendet.
